@@ -10,8 +10,6 @@ Then naively attempts to just take the highest value item at all points.
 import argparse
 from time import time
 
-from functools import lru_cache
-
 #Reads data from file
 #Returns the number of items and weight from the first line
 #Then returns the full dataset
@@ -35,19 +33,20 @@ def writeData(fileName, result, value):
 
 #Approximation Algorithm
 def greedy(items, maxWeight, data):
-    data.sort(reverse=True,key=lambda pt: pt[0]/pt[1])
+    data = sorted(enumerate(data), reverse=True,key=lambda pt: pt[1][0]/pt[1][1])
 
     outputs = []
     weight = 0
     value = 0
     i = 0
     while i < items:
-        if (weight + data[i][1] <= maxWeight):
-            outputs.append(i)
-            weight += data[i][1]
-            value += data[i][0]
-        else:
-            i = items
+        weight += data[i][1][1]
+        if (weight > maxWeight):
+            return outputs, value
+        
+        outputs.append(data[i][0])
+        weight += data[i][1][1]
+        value += data[i][1][0]
         i += 1
     return outputs, value
 
@@ -61,8 +60,7 @@ def approximation(file, output):
     items, weight, data = readData(file)
     outputs, value = greedy(items, weight, data)
     writeData(output, outputs, value)
-
-    return 
+    return value
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Arguments to execute the fully-polynomial approximation of Knapsack Problem.")
@@ -70,6 +68,8 @@ if __name__ == '__main__':
     parser.add_argument('--output', help="Location to output files. Output will have the same name as input.")
     args = parser.parse_args()
     t_start = time()
-    approximation(args.file, args.output)
+    value = approximation(args.file, args.output)
     end = time() - t_start
     print('Took: ' + str(end))
+    print('Final Value: ' + str(value))
+    print('Optimal Below: ' + str(2 * value))
