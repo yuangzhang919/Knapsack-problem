@@ -46,6 +46,8 @@ def greedy(items, maxWeight, data):
             outputs.append(i)
             weight += data[i][1]
             value += data[i][0]
+        else:
+            i = items
         i += 1
     return outputs, value
 
