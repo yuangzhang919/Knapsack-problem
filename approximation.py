@@ -17,11 +17,11 @@ from time import time
 def readData(fileName):
     f = open(fileName, 'r')
     tmp = (f.readline().split(' '))
-    item = int(tmp[0])
-    weight = int(tmp[1])
+    item = float(tmp[0])
+    weight = float(tmp[1])
     data = []
     for line in f:
-        data.append([int(i) for i in line.split()])
+        data.append([float(i) for i in line.split()])
     return item,weight,data
 
 #Outputs Data to location using name defined in naming conventions.
@@ -85,7 +85,7 @@ def process_submission():
             end = time() - t_start
             print('Took: ' + str(end))
             print('Final Value: ' + str(value))
-            print('Optimal Below: ' + str(2 * value))
+            #print('Optimal Below: ' + str(2 * value))
         else:
             print(f"File {file_name} does not exist.")
 
@@ -102,4 +102,4 @@ if __name__ == '__main__':
     end = time() - t_start
     print('Took: ' + str(end))
     print('Final Value: ' + str(value))
-    print('Optimal Below: ' + str(2 * value))
+    #print('Optimal Below: ' + str(2 * value))
