@@ -51,7 +51,6 @@ def greedy(items, maxWeight, data):
             return outputs, value
         
         outputs.append(data[i][0])
-        weight += data[i][1][1]
         value += data[i][1][0]
         i += 1
     return outputs, value
