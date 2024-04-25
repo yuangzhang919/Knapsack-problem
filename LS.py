@@ -39,7 +39,7 @@ def simulated_annealing(values, weights, capacity, initial_temp, final_temp, alp
         new_solution[idx] = 1 - current_solution[idx]  # Flip the selection state
 
         new_value = current_value + (values[idx] if new_solution[idx] == 1 else -values[idx])
-        new_weight = current_weight + (weights[idx] if new_solution[idx] is 1 else -weights[idx])
+        new_weight = current_weight + (weights[idx] if new_solution[idx] == 1 else -weights[idx])
 
         # If new weight exceeds capacity, skip this solution
         if new_weight > capacity:
@@ -53,7 +53,7 @@ def simulated_annealing(values, weights, capacity, initial_temp, final_temp, alp
         if random.random() < acceptance_probability:
             current_solution = new_solution
             current_value = new_value
-            current_weight = current_weight + (weights[idx] if new_solution[idx] is 1 else -weights[idx])
+            current_weight = current_weight + (weights[idx] if new_solution[idx] == 1 else -weights[idx])
 
             # Correctly update trace only when a new best solution is found
             timestamp = time.time() - start_time

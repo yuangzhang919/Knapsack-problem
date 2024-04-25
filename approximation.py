@@ -71,10 +71,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Arguments to execute the fully-polynomial approximation of Knapsack Problem.")
     parser.add_argument('--file', help='Location of file to analyze')
     parser.add_argument('--output', help="Location to output files. Output will have the same name as input.")
-    parser.add_argument('--submission', help='Flag to run approximation on all data files expected. Note that this will NOT calculate errors. Set as True if you want to run.', default=False)
     args = parser.parse_args()
-    if args.submission:
-        print("Now executing all trials.")
     t_start = time()
     value = approximation(args.file, args.output)
     end = time() - t_start
