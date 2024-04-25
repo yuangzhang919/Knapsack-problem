@@ -8,7 +8,6 @@ Then naively attempts to just take the highest value item at all points.
 """
 
 import argparse
-import os
 from time import time
 
 #Reads data from file
@@ -29,11 +28,12 @@ def writeData(fileName, result, value):
     f = open(fileName, 'w')
     f.write(str(value))
     f.write('\n')
-    f.write(str(result))
+    f.write(', '.join(map(str, result)))
     return 
 
 #Approximation Algorithm
 def greedy(items, maxWeight, data):
+    #Sorting and tracking original indices
     data = sorted(enumerate(data), reverse=True,key=lambda pt: pt[1][0]/pt[1][1])
 
     outputs = []
@@ -42,7 +42,10 @@ def greedy(items, maxWeight, data):
     i = 0
     while i < items:
         weight += data[i][1][1]
+        #Iterates until finds first failure
         if (weight > maxWeight):
+            #Exists to deal with degnerate case where
+            #1 "option" has over 50% of all value
             if data[i][1][0] > value:
                 return [data[i][0]], data[i][1][0]
             return outputs, value
@@ -64,30 +67,6 @@ def approximation(file, output):
     outputs, value = greedy(items, weight, data)
     writeData(output, outputs, value)
     return value
-
-#Specialized function for processing data outputs quickly
-def process_submission():
-    # The directory where your test files are located
-    directory = 'data/test'  # Replace this with the actual path to your test directory
-
-    # File pattern to match your files
-    file_pattern = "KP_s_{:02d}"  # Adjust the padding as needed based on the file names
-
-    # Number of files to process
-    num_files = 8  # Update this to match the number of files you have
-    
-    for i in range(1, num_files + 1):
-        file_name = os.path.join(directory, file_pattern.format(i))
-        if os.path.isfile(file_name):
-            output_file_name = f"{file_name}_output.txt"
-            t_start = time()
-            value = approximation(file_name, output_file_name)
-            end = time() - t_start
-            print('Took: ' + str(end))
-            print('Final Value: ' + str(value))
-            #print('Optimal Below: ' + str(2 * value))
-        else:
-            print(f"File {file_name} does not exist.")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Arguments to execute the fully-polynomial approximation of Knapsack Problem.")
